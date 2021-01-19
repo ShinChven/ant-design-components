@@ -1,9 +1,6 @@
-import { Tag, Space, Menu } from 'antd';
-import { QuestionCircleOutlined } from '@ant-design/icons';
+import { Space, Tag } from 'antd';
 import React from 'react';
-import { useModel, SelectLang } from 'umi';
-import Avatar from './AvatarDropdown';
-import HeaderDropdown from '../HeaderDropdown';
+import { SelectLang, useModel } from 'umi';
 import HeaderSearch from '../HeaderSearch';
 import styles from './index.less';
 
@@ -53,31 +50,6 @@ const GlobalHeaderRight: React.FC = () => {
         //   console.log('input', value);
         // }}
       />
-      <HeaderDropdown
-        overlay={
-          <Menu>
-            <Menu.Item
-              onClick={() => {
-                window.open('/~docs');
-              }}
-            >
-              组件文档
-            </Menu.Item>
-            <Menu.Item
-              onClick={() => {
-                window.open('https://pro.ant.design/docs/getting-started');
-              }}
-            >
-              Ant Design Pro 文档
-            </Menu.Item>
-          </Menu>
-        }
-      >
-        <span className={styles.action}>
-          <QuestionCircleOutlined />
-        </span>
-      </HeaderDropdown>
-      <Avatar />
       {REACT_APP_ENV && (
         <span>
           <Tag color={ENVTagColor[REACT_APP_ENV]}>{REACT_APP_ENV}</Tag>

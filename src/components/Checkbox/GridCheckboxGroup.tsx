@@ -2,15 +2,24 @@ import { Checkbox, Col, Divider, Row } from 'antd';
 import React from 'react';
 import type { ColProps } from 'antd/es/grid';
 
-type ICheckboxLabel = string | React.ReactNode;
+export type ICheckboxLabel = string | React.ReactNode;
 
-type IGridCheckboxGroupOption = {
+export type IGridCheckboxGroupOption = {
   label: ICheckboxLabel;
   value: any;
   key: string;
 };
 
-type IGridCheckboxGroupProps = {
+export type IGridCheckboxOnChangeValue = {
+  checked: Set<any>;
+  checkAll: boolean;
+};
+
+export type IGridCheckboxOnChangeFunction = {
+  (value: IGridCheckboxOnChangeValue): void;
+};
+
+export type IGridCheckboxGroupProps = {
   options: IGridCheckboxGroupOption[];
   checkAllLabel: [
     /**
@@ -23,6 +32,7 @@ type IGridCheckboxGroupProps = {
     uncheckAll: ICheckboxLabel,
   ];
   checkboxColumnProps?: ColProps;
+  onChange?: IGridCheckboxOnChangeFunction;
 };
 
 /**
@@ -39,16 +49,19 @@ const GridCheckboxGroup: React.FC<IGridCheckboxGroupProps> = (props) => {
     options,
     checkAllLabel = ['check all', 'uncheck all'],
     checkboxColumnProps = { span: 6 },
+    onChange,
   } = props;
   const [checked, setChecked] = React.useState(new Set<any>());
   const [checkAll, setCheckAll] = React.useState(false);
   const [checkAllIndeterminate, setCheckAllIndeterminate] = React.useState(false);
   const checkAllIndeterminateKey = `${checkAllIndeterminate}_check_all`;
+  const isCheckingAll = () => checked.size > 0 && checked.size === options.length;
+  const isIndeterminate = () => checked.size > 0 && checked.size !== options.length;
   return (
     <div>
       <Checkbox
         key={checkAllIndeterminateKey}
-        defaultChecked={checked.size > 0 && checked.size === options.length}
+        defaultChecked={isCheckingAll()}
         indeterminate={checkAllIndeterminate}
         onChange={(e) => {
           options.map((item) =>
@@ -57,6 +70,9 @@ const GridCheckboxGroup: React.FC<IGridCheckboxGroupProps> = (props) => {
           setCheckAllIndeterminate(false);
           setChecked(checked);
           setCheckAll(e.target.checked);
+          if (typeof onChange === 'function') {
+            onChange({ checked, checkAll: isCheckingAll() });
+          }
         }}
       >
         {checkAllLabel[checkAll ? 1 : 0]}
@@ -76,8 +92,10 @@ const GridCheckboxGroup: React.FC<IGridCheckboxGroupProps> = (props) => {
                   checked.delete(item.value);
                 }
                 setChecked(checked);
-                const mSetAllIndeterminate = checked.size > 0 && checked.size !== options.length;
-                setCheckAllIndeterminate(mSetAllIndeterminate);
+                setCheckAllIndeterminate(isIndeterminate);
+                if (typeof onChange === 'function') {
+                  onChange({ checked, checkAll: isCheckingAll() });
+                }
               }}
             >
               {item.label}

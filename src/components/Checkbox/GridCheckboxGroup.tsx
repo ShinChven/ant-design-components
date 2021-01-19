@@ -36,11 +36,13 @@ export type IGridCheckboxGroupProps = {
 };
 
 /**
- * The original CheckboxGroup's Checkbox items are not in Grid layout. It seem disorder.
+ * The original CheckboxGroup's Checkbox items are not in Grid layout. It seems disorder.
  * <br/>
  * This is an examples to how we can create a Checkbox group
  * to place all Checkboxes in Grid layout
  * with **check/uncheck all** action.
+ * <br/>
+ * It is compatible to Form.
  *
  * @constructor
  */
@@ -53,6 +55,7 @@ const GridCheckboxGroup: React.FC<IGridCheckboxGroupProps> = (props) => {
   } = props;
   const [checked, setChecked] = React.useState(new Set<any>());
   const [checkAll, setCheckAll] = React.useState(false);
+  const [, setValue] = React.useState<IGridCheckboxOnChangeValue>({ checked, checkAll });
   const [checkAllIndeterminate, setCheckAllIndeterminate] = React.useState(false);
   const checkAllIndeterminateKey = `${checkAllIndeterminate}_check_all`;
   const isCheckingAll = () => checked.size > 0 && checked.size === options.length;
@@ -70,8 +73,10 @@ const GridCheckboxGroup: React.FC<IGridCheckboxGroupProps> = (props) => {
           setCheckAllIndeterminate(false);
           setChecked(checked);
           setCheckAll(e.target.checked);
+          const v = { checked, checkAll: isCheckingAll() };
+          setValue(v);
           if (typeof onChange === 'function') {
-            onChange({ checked, checkAll: isCheckingAll() });
+            onChange(v);
           }
         }}
       >
@@ -93,8 +98,10 @@ const GridCheckboxGroup: React.FC<IGridCheckboxGroupProps> = (props) => {
                 }
                 setChecked(checked);
                 setCheckAllIndeterminate(isIndeterminate);
+                const v = { checked, checkAll: isCheckingAll() };
+                setValue(v);
                 if (typeof onChange === 'function') {
-                  onChange({ checked, checkAll: isCheckingAll() });
+                  onChange(v);
                 }
               }}
             >

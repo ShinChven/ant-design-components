@@ -10,6 +10,12 @@
     component: './Welcome',
   },
   {
+    path: '/showcase/checkbox',
+    name: 'Checkbox',
+    icon: 'CheckOutlined',
+    component: './showcase/Checkbox',
+  },
+  {
     path: '/',
     redirect: '/welcome',
   },

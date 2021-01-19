@@ -1,8 +1,29 @@
 import { Checkbox, Col, Divider, Row } from 'antd';
 import React from 'react';
-import { RouteContext } from '@ant-design/pro-layout';
+import type { ColProps } from 'antd/es/grid';
 
-const options = ['IndianRed', 'LightCoral', 'Salmon', 'DarkSalmon', 'LightSalmon', 'Crimson'];
+type ICheckboxLabel = string | React.ReactNode;
+
+type IGridCheckboxGroupOption = {
+  label: ICheckboxLabel;
+  value: any;
+  key: string;
+};
+
+type IGridCheckboxGroupProps = {
+  options: IGridCheckboxGroupOption[];
+  checkAllLabel: [
+    /**
+     * check all label
+     */
+    checkAll: ICheckboxLabel,
+    /**
+     * uncheck all label
+     */
+    uncheckAll: ICheckboxLabel,
+  ];
+  checkboxColumnProps?: ColProps;
+};
 
 /**
  * The original CheckboxGroup's Checkbox items are not in Grid layout. It seem disorder.
@@ -13,55 +34,58 @@ const options = ['IndianRed', 'LightCoral', 'Salmon', 'DarkSalmon', 'LightSalmon
  *
  * @constructor
  */
-const GridCheckboxGroup = () => {
-  const [checked, setChecked] = React.useState(new Set<string>());
+const GridCheckboxGroup: React.FC<IGridCheckboxGroupProps> = (props) => {
+  const {
+    options,
+    checkAllLabel = ['check all', 'uncheck all'],
+    checkboxColumnProps = { span: 6 },
+  } = props;
+  const [checked, setChecked] = React.useState(new Set<any>());
   const [checkAll, setCheckAll] = React.useState(false);
   const [checkAllIndeterminate, setCheckAllIndeterminate] = React.useState(false);
+  const checkAllIndeterminateKey = `${checkAllIndeterminate}_check_all`;
   return (
-    <RouteContext.Consumer>
-      {({ isMobile }) => (
-        <div>
-          <Checkbox
-            key={`${checkAllIndeterminate}_check_all`}
-            defaultChecked={checked.size > 0 && checked.size === options.length}
-            indeterminate={checkAllIndeterminate}
-            onChange={(e) => {
-              options.map((item) => (e.target.checked ? checked.add(item) : checked.delete(item)));
-              setCheckAllIndeterminate(false);
-              setChecked(checked);
-              setCheckAll(e.target.checked);
-            }}
-          >
-            {' '}
-            check all
-          </Checkbox>
-          <Divider />
-          {/* Use a react key that referring check all state to force reload all option Checkboxes' checked state */}
-          <Row key={`check_all_${checkAll}`}>
-            {/* Checkboxes are placed in grid layout */}
-            {options.map((item) => (
-              <Col key={`${item}_`} span={isMobile ? 12 : 6}>
-                <Checkbox
-                  defaultChecked={checked.has(item)}
-                  onChange={(e) => {
-                    if (e.target.checked) {
-                      checked.add(item);
-                    } else {
-                      checked.delete(item);
-                    }
-                    setChecked(checked);
-                    setCheckAllIndeterminate(checked.size !== options.length);
-                  }}
-                >
-                  {' '}
-                  {item}
-                </Checkbox>
-              </Col>
-            ))}
-          </Row>
-        </div>
-      )}
-    </RouteContext.Consumer>
+    <div>
+      <Checkbox
+        key={checkAllIndeterminateKey}
+        defaultChecked={checked.size > 0 && checked.size === options.length}
+        indeterminate={checkAllIndeterminate}
+        onChange={(e) => {
+          options.map((item) =>
+            e.target.checked ? checked.add(item.value) : checked.delete(item.value),
+          );
+          setCheckAllIndeterminate(false);
+          setChecked(checked);
+          setCheckAll(e.target.checked);
+        }}
+      >
+        {checkAllLabel[checkAll ? 1 : 0]}
+      </Checkbox>
+      <Divider />
+      {/* Use a react key that referring check all state to force reload all option Checkboxes' checked state */}
+      <Row key={`check_all_${checkAll}`}>
+        {/* Checkboxes are placed in grid layout */}
+        {options.map((item) => (
+          <Col key={item.key} {...checkboxColumnProps}>
+            <Checkbox
+              defaultChecked={checked.has(item.value)}
+              onChange={(e) => {
+                if (e.target.checked) {
+                  checked.add(item.value);
+                } else {
+                  checked.delete(item.value);
+                }
+                setChecked(checked);
+                const mSetAllIndeterminate = checked.size > 0 && checked.size !== options.length;
+                setCheckAllIndeterminate(mSetAllIndeterminate);
+              }}
+            >
+              {item.label}
+            </Checkbox>
+          </Col>
+        ))}
+      </Row>
+    </div>
   );
 };
 

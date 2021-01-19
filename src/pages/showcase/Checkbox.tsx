@@ -3,6 +3,8 @@ import { Card, Divider } from 'antd';
 import GridCheckboxGroup from '@/components/Checkbox/GridCheckboxGroup';
 import ReactMarkdown from 'react-markdown';
 
+const options = ['IndianRed', 'LightCoral', 'Salmon', 'DarkSalmon', 'LightSalmon', 'Crimson'];
+
 const CheckboxShowcase = () => (
   <PageContainer>
     <Card title="GridCheckboxGroup">
@@ -14,7 +16,10 @@ to place all Checkboxes in Grid layout
 with **check/uncheck all** action.
     `}</ReactMarkdown>
       <Divider />
-      <GridCheckboxGroup />
+      <GridCheckboxGroup
+        checkAllLabel={['全选', '取消全选']}
+        options={options.map((item) => ({ label: item, value: item, key: item }))}
+      />
     </Card>
   </PageContainer>
 );

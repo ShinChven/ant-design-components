@@ -21,7 +21,18 @@
       },
     ],
   },
-
+  {
+    path: '/showcase/Descriptions/',
+    name: 'Descriptions',
+    icon: 'InfoCircleFilled',
+    routes: [
+      {
+        path: '/showcase/Descriptions/MappedDescriptions',
+        name: 'MappedDescriptions',
+        component: './showcase/Descriptions/MappedDescriptionsShowcase',
+      },
+    ],
+  },
   {
     path: '/',
     redirect: '/welcome',

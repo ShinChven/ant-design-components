@@ -1,13 +1,31 @@
 import { PageContainer } from '@ant-design/pro-layout';
 import { Button, Card, Divider, Form, Tooltip } from 'antd';
-import type { IGridCheckboxOnChangeValue } from '@/components/Checkbox/GridCheckboxGroup';
-import GridCheckboxGroup from '@/components/Checkbox/GridCheckboxGroup';
+import type { IGridCheckboxOnChangeValue } from '@/lib/Checkbox/GridCheckboxGroup';
+import GridCheckboxGroup from '@/lib/Checkbox/GridCheckboxGroup';
 import ReactMarkdown from 'react-markdown';
 import { useState } from 'react';
+import { PresetColPropsMax6 } from '@/lib/Grid';
 
-const options = ['IndianRed', 'LightCoral', 'Salmon', 'DarkSalmon', 'LightSalmon', 'Crimson'];
+const options = [
+  'IndianRed',
+  'LightCoral',
+  'Salmon',
+  'DarkSalmon',
+  'LightSalmon',
+  'Crimson',
+  'Red',
+  'FireBrick',
+  'Pink',
+  'LightPink',
+  'HotPink',
+  'DeepPink',
+  'MediumVioletRed',
+  'PaleVioletRed',
+  'LightSalmon',
+  'Coral',
+];
 
-const CheckboxShowcase = () => {
+const GridCheckboxGroupShowcase = () => {
   const [value, setValue] = useState<IGridCheckboxOnChangeValue | undefined>(undefined);
   const [formValues, setFormValues] = useState<{ colors?: IGridCheckboxOnChangeValue } | undefined>(
     undefined,
@@ -37,6 +55,7 @@ const CheckboxShowcase = () => {
               onChange={(v) => {
                 setValue(v);
               }}
+              checkboxColumnProps={PresetColPropsMax6}
             />
           </Form.Item>
           <Divider />
@@ -53,4 +72,4 @@ const CheckboxShowcase = () => {
   );
 };
 
-export default CheckboxShowcase;
+export default GridCheckboxGroupShowcase;

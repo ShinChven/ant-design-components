@@ -10,11 +10,18 @@
     component: './Welcome',
   },
   {
-    path: '/showcase/checkbox',
+    path: '/showcase/Checkbox/',
     name: 'Checkbox',
     icon: 'CheckOutlined',
-    component: './showcase/Checkbox',
+    routes: [
+      {
+        path: '/showcase/Checkbox/GridCheckboxGroup',
+        name: 'GridCheckboxGroup',
+        component: './showcase/Checkbox/GridCheckboxGroupShowcase',
+      },
+    ],
   },
+
   {
     path: '/',
     redirect: '/welcome',

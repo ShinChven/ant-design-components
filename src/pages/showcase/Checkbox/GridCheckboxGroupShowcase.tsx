@@ -21,7 +21,6 @@ const options = [
   'DeepPink',
   'MediumVioletRed',
   'PaleVioletRed',
-  'LightSalmon',
   'Coral',
 ];
 
@@ -66,7 +65,7 @@ const GridCheckboxGroupShowcase = () => {
         </Form>
         <Divider>Values</Divider>
         <div>check all: {`${value?.checkAll}`}</div>
-        <div>checked values: {value ? Array.from(value.checked).join(', ') : ''}</div>
+        <div>checked values: {value ? value.checked.join(', ') : ''}</div>
       </Card>
     </PageContainer>
   );

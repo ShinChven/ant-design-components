@@ -11,7 +11,7 @@ export type IGridCheckboxGroupOption = {
 };
 
 export type IGridCheckboxOnChangeValue = {
-  checked: Set<any>;
+  checked: any[];
   checkAll: boolean;
 };
 
@@ -55,7 +55,6 @@ const GridCheckboxGroup: React.FC<IGridCheckboxGroupProps> = (props) => {
   } = props;
   const [checked, setChecked] = React.useState(new Set<any>());
   const [checkAll, setCheckAll] = React.useState(false);
-  const [, setValue] = React.useState<IGridCheckboxOnChangeValue>({ checked, checkAll });
   const [checkAllIndeterminate, setCheckAllIndeterminate] = React.useState(false);
   const checkAllIndeterminateKey = `${checkAllIndeterminate}_check_all`;
   const isCheckingAll = () => checked.size > 0 && checked.size === options.length;
@@ -73,10 +72,8 @@ const GridCheckboxGroup: React.FC<IGridCheckboxGroupProps> = (props) => {
           setCheckAllIndeterminate(false);
           setChecked(checked);
           setCheckAll(e.target.checked);
-          const v = { checked, checkAll: isCheckingAll() };
-          setValue(v);
           if (typeof onChange === 'function') {
-            onChange(v);
+            onChange({ checked: Array.from(checked), checkAll: isCheckingAll() });
           }
         }}
       >
@@ -98,10 +95,8 @@ const GridCheckboxGroup: React.FC<IGridCheckboxGroupProps> = (props) => {
                 }
                 setChecked(checked);
                 setCheckAllIndeterminate(isIndeterminate);
-                const v = { checked, checkAll: isCheckingAll() };
-                setValue(v);
                 if (typeof onChange === 'function') {
-                  onChange(v);
+                  onChange({ checked: Array.from(checked), checkAll: isCheckingAll() });
                 }
               }}
             >

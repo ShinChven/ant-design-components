@@ -4,7 +4,7 @@ import type { IGridCheckboxOnChangeValue } from '@/lib/Checkbox/GridCheckboxGrou
 import GridCheckboxGroup from '@/lib/Checkbox/GridCheckboxGroup';
 import ReactMarkdown from 'react-markdown';
 import { useState } from 'react';
-import { PresetColPropsMax6 } from '@/lib/Grid';
+import * as PresetColProps from '@/lib/Grid/PresetColProps';
 
 const options = [
   'IndianRed',
@@ -54,7 +54,7 @@ const GridCheckboxGroupShowcase = () => {
               onChange={(v) => {
                 setValue(v);
               }}
-              checkboxColumnProps={PresetColPropsMax6}
+              checkboxColProps={PresetColProps.PresetColProps_1_2_3_4_6}
             />
           </Form.Item>
           <Divider />

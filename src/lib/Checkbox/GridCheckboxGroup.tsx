@@ -1,6 +1,6 @@
 import { Checkbox, Col, Divider, Row } from 'antd';
 import React from 'react';
-import type { ColProps } from 'antd/es/grid';
+import type { ColProps, RowProps } from 'antd/es/grid';
 
 export type ICheckboxLabel = string | React.ReactNode;
 
@@ -31,7 +31,8 @@ export type IGridCheckboxGroupProps = {
      */
     uncheckAll: ICheckboxLabel,
   ];
-  checkboxColumnProps?: ColProps;
+  checkBoxRowProps?: RowProps;
+  checkboxColProps?: ColProps;
   onChange?: IGridCheckboxOnChangeFunction;
 };
 
@@ -50,7 +51,8 @@ const GridCheckboxGroup: React.FC<IGridCheckboxGroupProps> = (props) => {
   const {
     options,
     checkAllLabel = ['check all', 'uncheck all'],
-    checkboxColumnProps = { span: 6 },
+    checkboxColProps = { span: 6 },
+    checkBoxRowProps = {},
     onChange,
   } = props;
   const [checked, setChecked] = React.useState(new Set<any>());
@@ -81,10 +83,10 @@ const GridCheckboxGroup: React.FC<IGridCheckboxGroupProps> = (props) => {
       </Checkbox>
       <Divider />
       {/* Use a react key that referring check all state to force reload all option Checkboxes' checked state */}
-      <Row key={`check_all_${checkAll}`}>
+      <Row key={`check_all_${checkAll}`} {...checkBoxRowProps}>
         {/* Checkboxes are placed in grid layout */}
         {options.map((item) => (
-          <Col key={item.key} {...checkboxColumnProps}>
+          <Col key={item.key} {...checkboxColProps}>
             <Checkbox
               defaultChecked={checked.has(item.value)}
               onChange={(e) => {
